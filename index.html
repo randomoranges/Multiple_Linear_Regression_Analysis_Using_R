@@ -7,34 +7,143 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
+            max-width: 900px;
             margin: 50px auto;
             padding: 20px;
+            background-color: #f5f5f5;
         }
-        h1 { color: #333; }
-        ul { list-style: none; padding: 0; }
-        li { margin: 15px 0; }
-        a {
-            display: inline-block;
-            padding: 10px 20px;
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            color: #333;
+            border-bottom: 3px solid #0366d6;
+            padding-bottom: 10px;
+        }
+        h2 { 
+            color: #0366d6;
+            margin-top: 30px;
+        }
+        .author {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th {
             background-color: #0366d6;
             color: white;
-            text-decoration: none;
-            border-radius: 5px;
+            padding: 12px;
+            text-align: left;
         }
-        a:hover { background-color: #0256b5; }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .file-type {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .qmd { background-color: #e3f2fd; color: #1976d2; }
+        .html { background-color: #fff3e0; color: #f57c00; }
+        .pdf { background-color: #fce4ec; color: #c2185b; }
     </style>
 </head>
 <body>
-    <h1>Multiple Linear Regression Analysis Using R</h1>
-    <p>By Jishnu Sai Matra</p>
-    
-    <h2>Documents:</h2>
-    <ul>
-        <li><a href="QDoc_MLR_Handout.html">📄 View Handout (HTML)</a></li>
-        <li><a href="QPres_R_MLR.html">📊 View Presentation (HTML)</a></li>
-        <li><a href="QDoc_MLR_Handout.pdf">📥 Download Handout (PDF)</a></li>
-        <li><a href="QPres_R_MLR.pdf">📥 Download Presentation (PDF)</a></li>
-    </ul>
+    <div class="container">
+        <h1>Multiple Linear Regression Analysis Using R</h1>
+        <p class="author">By Jishnu Sai Matra</p>
+        <p><strong>Course:</strong> Data Analysis for Decision-Making (WS 2025/26)<br>
+        <strong>Institution:</strong> Fresenius University of Applied Science</p>
+
+        <h2>📚 Project Files</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Document Type</th>
+                    <th>File Format</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Handout Files -->
+                <tr>
+                    <td rowspan="3"><strong>Handout</strong></td>
+                    <td><span class="file-type qmd">QMD</span> Quarto Source</td>
+                    <td><a href="QDoc_MLR_Handout.qmd" download>📥 Download QDoc_MLR_Handout.qmd</a></td>
+                </tr>
+                <tr>
+                    <td><span class="file-type html">HTML</span> Web Version</td>
+                    <td><a href="QDoc_MLR_Handout.html" target="_blank">🌐 View QDoc_MLR_Handout.html</a></td>
+                </tr>
+                <tr>
+                    <td><span class="file-type pdf">PDF</span> Printable Version</td>
+                    <td><a href="QDoc_MLR_Handout.pdf" target="_blank">📄 View QDoc_MLR_Handout.pdf</a></td>
+                </tr>
+                
+                <!-- Presentation Files -->
+                <tr>
+                    <td rowspan="3"><strong>Presentation</strong></td>
+                    <td><span class="file-type qmd">QMD</span> Quarto Source</td>
+                    <td><a href="QPres_R_MLR.qmd" download>📥 Download QPres_R_MLR.qmd</a></td>
+                </tr>
+                <tr>
+                    <td><span class="file-type html">HTML</span> Reveal.js Slides</td>
+                    <td><a href="QPres_R_MLR.html" target="_blank">🎬 View QPres_R_MLR.html</a></td>
+                </tr>
+                <tr>
+                    <td><span class="file-type pdf">PDF</span> Printable Slides</td>
+                    <td><a href="QPres_R_MLR.pdf" target="_blank">📊 View QPres_R_MLR.pdf</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>✅ Submission Checklist</h2>
+        <ul style="list-style: none; padding-left: 0;">
+            <li>☑ The submission contains the Quarto file of the handout</li>
+            <li>☑ The submission contains the Quarto file of the presentation</li>
+            <li>☑ The submission contains the HTML file of the handout</li>
+            <li>☑ The submission contains the HTML file of the presentation</li>
+            <li>☑ The submission contains the PDF file of the handout</li>
+            <li>☑ The submission contains the PDF file of the presentation</li>
+        </ul>
+
+        <h2>📂 Additional Files</h2>
+        <ul>
+            <li><a href="MLR_RScript.R">R Script</a></li>
+            <li><a href="literatur.bib">Bibliography</a></li>
+        </ul>
+
+        <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
+        <p style="text-align: center; color: #666; font-size: 14px;">
+            <strong>GitHub Repository:</strong> 
+            <a href="https://github.com/randomoranges/Multiple_Linear_Regression_Analysis_Using_R" target="_blank">
+                View on GitHub
+            </a>
+        </p>
+    </div>
 </body>
 </html>
