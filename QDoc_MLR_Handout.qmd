@@ -1,0 +1,128 @@
+---
+title: "Comparing Linear and Lasso Regression Models: An Analysis Using the Boston Housing Dataset"
+author: "Your Name"
+date: today
+format:
+  pdf:
+    papersize: a4
+    geometry:
+      - top=2.54cm
+      - bottom=2.54cm
+      - left=2.54cm
+      - right=2.54cm
+    fontsize: 12pt
+    linestretch: 1.5
+    documentclass: article
+    number-sections: false
+mainfont: "Times New Roman"
+indent: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+\begin{center}
+\textbf{Abstract}
+\end{center}
+
+This paper compares ordinary least squares (OLS) regression with Lasso regression using the Boston Housing dataset. While both models demonstrated similar predictive performance (R² ≈ 0.74), they differ in their treatment of predictor variables. Lasso regression incorporates L1 regularization, which shrinks coefficient estimates and can perform automatic feature selection. The analysis illustrates practical implementation of both methods and discusses their respective advantages and limitations. Results suggest that while regularization had minimal impact on model fit for this dataset, Lasso regression remains valuable for feature selection and improving model interpretability.
+
+\newpage
+
+# Introduction
+
+Regression analysis is fundamental in statistical modeling, allowing researchers to understand relationships between variables and make predictions. While ordinary least squares (OLS) regression remains widely used, it can suffer from overfitting when dealing with multiple predictors, particularly in datasets where predictors are correlated. Lasso (Least Absolute Shrinkage and Selection Operator) regression offers an alternative approach by incorporating regularization, which constrains coefficient estimates and can perform automatic feature selection.
+
+This handout demonstrates the practical implementation and comparison of linear regression and Lasso regression using the Boston Housing dataset. The analysis aims to illustrate how regularization affects model coefficients and predictive performance, providing insights into when Lasso regression may be preferable to traditional linear regression.
+
+# Methods
+
+## Dataset
+
+The Boston Housing dataset, available in the MASS package in R, contains information on housing values in suburbs of Boston. The dataset includes 506 observations across 14 variables. The outcome variable is `medv` (median value of owner-occupied homes in \$1000s), while the 13 predictor variables include per capita crime rate, proportion of residential land zoned for lots, average number of rooms per dwelling, and other neighborhood characteristics.
+
+## Statistical Approach
+
+Two regression models were fitted to the data. First, an ordinary least squares regression model was estimated using the `lm()` function in R, which provides a baseline without regularization. Second, a Lasso regression model was fitted using the `glmnet` package, which adds an L1 penalty term to the loss function. The optimal regularization parameter (λ) was selected through 10-fold cross-validation.
+
+The Lasso regression objective function minimizes:
+
+$$\text{RSS} + \lambda \sum_{j=1}^{p} |\beta_j|$$
+
+where RSS is the residual sum of squares, λ is the regularization parameter, and $\beta_j$ represents the regression coefficients. This penalty encourages sparsity by shrinking some coefficients to exactly zero. Model performance was evaluated using R², which measures the proportion of variance in the outcome variable explained by the predictors.
+
+# Implementation
+
+The analysis was conducted in R (version 4.x). First, the necessary packages were loaded and the data prepared:
+
+```{r}
+#| label: setup
+
+# Load required packages
+library(glmnet)
+library(MASS)
+
+# Load and prepare data
+data(Boston)
+X <- as.matrix(Boston[, -14])  # Predictor matrix
+y <- Boston$medv                # Outcome variable
+```
+
+## Linear Regression Model
+
+The baseline OLS model was fitted using all available predictors:
+
+```{r}
+#| label: linear-model
+
+# Fit linear model
+lm_model <- lm(medv ~ ., data = Boston)
+lm_coef <- coef(lm_model)
+lm_r_squared <- summary(lm_model)$r.squared
+```
+
+The linear model yielded an R² of `r round(lm_r_squared, 4)`, indicating that approximately `r round(lm_r_squared * 100, 1)`% of the variance in housing values is explained by the predictors.
+
+## Lasso Regression Model
+
+For the Lasso model, cross-validation was used to determine the optimal λ value:
+
+```{r}
+#| label: lasso-model
+
+# Fit Lasso model with cross-validation
+cv_model <- cv.glmnet(X, y, alpha = 1)
+best_lambda <- cv_model$lambda.min
+
+# Fit final model with optimal lambda
+lasso_model <- glmnet(X, y, alpha = 1, lambda = best_lambda)
+lasso_coef <- coef(lasso_model)
+
+# Calculate predictions and R-squared
+lasso_predictions <- predict(lasso_model, newx = X)
+lasso_r_squared <- 1 - (sum((y - lasso_predictions)^2) / 
+                        sum((y - mean(y))^2))
+```
+
+The cross-validation procedure selected λ = `r round(best_lambda, 4)`. The resulting Lasso model achieved an R² of `r round(lasso_r_squared, 4)`.
+
+# Results
+
+## Model Performance
+
+Both models demonstrated comparable predictive performance on the training data. The OLS regression achieved an R² of `r round(lm_r_squared, 4)`, while the Lasso regression achieved an R² of `r round(lasso_r_squared, 4)`. The difference in R² values was minimal (`r round(abs(lm_r_squared - lasso_r_squared), 4)`), indicating that the regularization penalty had little impact on in-sample fit. This similarity in performance suggests that while Lasso provides coefficient shrinkage, it does not substantially sacrifice explanatory power in this dataset.
+
+# Discussion
+
+This analysis demonstrates the practical application of Lasso regression as an alternative to traditional OLS regression. While both approaches yielded similar R² values, they differ fundamentally in their treatment of predictor variables. The OLS model retains all predictors with unconstrained coefficient estimates, whereas Lasso applies regularization that shrinks coefficients and can perform automatic variable selection.
+
+The comparable performance between models suggests that the Boston Housing dataset does not suffer from severe multicollinearity or overfitting issues that would strongly favor regularization. In datasets with more predictors or stronger correlation structures, Lasso's advantage would likely be more pronounced. Additionally, it is important to note that the R² values reported here are in-sample estimates; evaluation on held-out test data would provide a more robust assessment of generalization performance.
+
+From a practical standpoint, Lasso regression offers several advantages. The regularization constraint can improve model interpretability by identifying the most influential predictors. This feature selection property is particularly valuable in exploratory analyses or when working with high-dimensional data. Furthermore, by preventing overly large coefficient estimates, Lasso can improve model stability and reduce sensitivity to individual observations.
+
+However, researchers should be mindful of Lasso's limitations. The method assumes that true coefficients can be sparse, which may not hold in all contexts. Additionally, when predictors are highly correlated, Lasso tends to arbitrarily select one variable while shrinking others, potentially complicating interpretation. In such cases, alternative regularization methods like elastic net, which combines L1 and L2 penalties, may be more appropriate.
+
+# Conclusion
+
+This handout illustrated the implementation and comparison of linear and Lasso regression using the Boston Housing dataset. Both models achieved similar predictive performance, with R² values above 0.73. The Lasso model successfully applied regularization to shrink coefficient estimates while maintaining explanatory power. These results highlight that Lasso regression can be a valuable tool in the statistical modeling toolkit, particularly when feature selection or improved generalization is desired. Future analyses could extend this comparison by evaluating model performance on independent test data and exploring alternative regularization approaches.

@@ -1,0 +1,189 @@
+---
+title: "Lasso vs Linear Regression"
+subtitle: "A Comparison Using the Boston Housing Dataset"
+format:
+  revealjs:
+    theme: simple
+    transition: fade
+    slide-number: true
+    code-fold: false
+    code-line-numbers: false
+    margin: 0.1
+    fontsize: 28px
+---
+
+```{=html}
+<style>
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.reveal pre {
+  font-size: 0.55em;
+}
+.reveal code {
+  font-size: 0.85em;
+}
+.reveal h2 {
+  font-size: 1.5em;
+  margin-bottom: 30px;
+}
+.reveal p, .reveal ul, .reveal ol {
+  font-size: 0.85em;
+}
+</style>
+```
+
+## About the Analysis
+
+::::: columns
+::: {.column width="50%"}
+**Packages Used:**
+
+-   `glmnet` - For Lasso regression
+-   `MASS` - Contains Boston dataset
+:::
+
+::: {.column width="50%"}
+**Boston Housing Dataset:**
+
+-   506 observations
+-   14 variables
+-   Target: `medv` (median home value)
+-   Predictors: crime rate, room number, age, etc.
+:::
+:::::
+
+------------------------------------------------------------------------
+
+## Key Concepts
+
+**Coefficients**: Numerical values that represent the relationship strength between each predictor variable and the target variable. A larger absolute value indicates stronger influence.
+
+**R-squared (R²)**: A statistical measure (ranging from 0 to 1) that indicates the proportion of variance in the dependent variable that is predictable from the independent variables. Higher values indicate better model fit.
+
+**Penalty (L1)**: In Lasso regression, the penalty is the sum of absolute values of coefficients. This can force some coefficients to become exactly zero, effectively performing feature selection.
+
+**Regularization**: A technique to prevent overfitting by adding a penalty term to the loss function, discouraging overly complex models with large coefficients.
+
+**Lambda (λ)**: The regularization strength parameter. Higher λ values create stronger penalties, leading to more coefficients being shrunk toward zero.
+
+------------------------------------------------------------------------
+
+## Step 1: Install & Load Packages
+
+```{r}
+#| echo: true
+#| output: false
+
+# Install and load packages
+if (!require(glmnet)) {
+  install.packages("glmnet")
+}
+library(glmnet)
+library(MASS)
+```
+
+**Purpose:** Set up the required libraries for our analysis
+
+------------------------------------------------------------------------
+
+## Step 2: Load & Prepare Data
+
+```{r}
+#| echo: true
+#| output: true
+
+# Load and prepare data
+data(Boston)
+head(Boston, 3)
+
+X <- as.matrix(Boston[, -14])
+y <- Boston$medv
+```
+
+**What we did:** Loaded the Boston dataset and separated predictors (X) from the target variable (y)
+
+------------------------------------------------------------------------
+
+## Step 3: Fit Linear Model
+
+```{r}
+#| echo: true
+
+# Fit a normal linear model
+lm_model <- lm(medv ~ ., data = Boston)
+lm_coef <- coef(lm_model)
+lm_r_squared <- summary(lm_model)$r.squared
+
+cat("--- Base lm() Coefficients ---\n")
+print(lm_coef)
+cat("\nR-squared:", lm_r_squared, "\n")
+```
+
+------------------------------------------------------------------------
+
+## Step 4: Fit Lasso Model
+
+```{r}
+#| echo: true
+
+# Fit a lasso model (with cross-validation)
+cv_model <- cv.glmnet(X, y, alpha = 1)
+best_lambda <- cv_model$lambda.min
+
+cat("Best lambda from cross-validation:", best_lambda, "\n")
+
+lasso_model <- glmnet(X, y, alpha = 1, lambda = best_lambda)
+```
+
+**Key Point:** Cross-validation automatically selects the optimal lambda value
+
+------------------------------------------------------------------------
+
+## Step 5: Extract Lasso Results
+
+```{r}
+#| echo: true
+
+# Extract Lasso coefficients and predictions
+lasso_coef <- coef(lasso_model)
+lasso_predictions <- predict(lasso_model, newx = X)
+lasso_r_squared <- 1 - (sum((y - lasso_predictions)^2) / 
+                        sum((y - mean(y))^2))
+
+cat("--- Lasso Coefficients ---\n")
+print(lasso_coef)
+```
+
+------------------------------------------------------------------------
+
+## Step 6: Compare Results
+
+```{r}
+#| echo: true
+
+# R-squared Comparison
+cat("--- R-squared Comparison ---\n")
+cat("Base lm() R-squared:", lm_r_squared, "\n")
+cat("Lasso glmnet R-squared:", lasso_r_squared, "\n")
+
+cat("\nDifference:", lm_r_squared - lasso_r_squared, "\n")
+```
+
+**Observation:** Lasso achieves similar performance while potentially simplifying the model by shrinking some coefficients
+
+------------------------------------------------------------------------
+
+## Conclusion
+
+-   **Linear Regression**: Uses all predictors, no regularization
+-   **Lasso Regression**: Applies L1 penalty, can eliminate irrelevant features
+-   **Performance**: Both models show similar R² values on this dataset
+-   **Advantage of Lasso**: Provides feature selection and helps prevent overfitting
+-   **Use Case**: Lasso is particularly useful when you have many predictors and want a simpler, more interpretable model
+
+------------------------------------------------------------------------
+
+## Thank You! {.center}
+
+**Questions?**
