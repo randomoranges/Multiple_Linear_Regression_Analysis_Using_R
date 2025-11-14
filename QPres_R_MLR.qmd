@@ -1,15 +1,17 @@
 ---
-title: "Lasso vs Linear Regression"
-subtitle: "A Comparison Using the Boston Housing Dataset"
+title: "Conducting and Presenting Multiple Linear Regression Analysis Using R"
+author: "Jishnu Matra"
 format:
   revealjs:
     theme: simple
-    transition: fade
+    transition: slide
     slide-number: true
     code-fold: false
     code-line-numbers: false
     margin: 0.1
     fontsize: 28px
+  beamer:
+    theme: default
 ---
 
 ```{=html}
@@ -40,6 +42,7 @@ body {
 **Packages Used:**
 
 -   `glmnet` - For Lasso regression
+-   `lm` - Ordinary least squares regression model 
 -   `MASS` - Contains Boston dataset
 :::
 
@@ -171,6 +174,44 @@ cat("\nDifference:", lm_r_squared - lasso_r_squared, "\n")
 ```
 
 **Observation:** Lasso achieves similar performance while potentially simplifying the model by shrinking some coefficients
+
+------------------------------------------------------------------------
+
+## Business Applications
+
+1. **Sales Forecasting**  
+   Use regression to predict future sales using variables like marketing spend, pricing, or seasonality.
+
+2. **Customer Churn Prediction**  
+   Identify which customer behaviors or attributes most strongly indicate churn risk.
+
+3. **Marketing Channel Optimization**  
+   Use Lasso to find which marketing channels contribute most to revenue and remove low-impact ones.
+
+4. **Employee Attrition & Performance Modeling**  
+   Predict employee outcomes based on workload, satisfaction, and manager ratings.
+
+5. **Demand Forecasting for Inventory**  
+   Estimate product demand using promotions, weather, or store traffic to improve stock planning.
+
+------------------------------------------------------------------------
+
+## Exercise: Try With Another Dataset
+
+**Task:**  
+Run the same workflow (load → prepare → fit → compare) using a *different dataset* such as `mtcars`, `iris`, or your own CSV.
+
+**Steps:**
+
+1. Load a dataset: `df <- mtcars`  
+2. Pick a target variable: `y <- df$mpg`  
+3. Create predictors: `X <- as.matrix(df[, -1])`  
+4. Fit linear & Lasso models (same code as earlier)  
+5. Compare R² and identify important predictors.
+
+**Goal:**  
+See how model behavior changes with a new dataset.
+
 
 ------------------------------------------------------------------------
 
