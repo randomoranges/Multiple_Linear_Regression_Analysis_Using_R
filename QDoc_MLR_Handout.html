@@ -2361,7 +2361,8 @@ border-bottom: none;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction-to-linear-regression-and-lasso-regression" id="toc-introduction-to-linear-regression-and-lasso-regression" class="nav-link active" data-scroll-target="#introduction-to-linear-regression-and-lasso-regression">Introduction to Linear Regression and Lasso Regression</a>
+  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
+  <li><a href="#introduction-to-linear-regression-and-lasso-regression" id="toc-introduction-to-linear-regression-and-lasso-regression" class="nav-link" data-scroll-target="#introduction-to-linear-regression-and-lasso-regression">Introduction to Linear Regression and Lasso Regression</a>
   <ul class="collapse">
   <li><a href="#key-terms-explained" id="toc-key-terms-explained" class="nav-link" data-scroll-target="#key-terms-explained">Key Terms Explained</a></li>
   <li><a href="#suitable-data-for-multiple-linear-regression-and-lasso-regression" id="toc-suitable-data-for-multiple-linear-regression-and-lasso-regression" class="nav-link" data-scroll-target="#suitable-data-for-multiple-linear-regression-and-lasso-regression">Suitable Data for Multiple Linear Regression and Lasso Regression</a></li>
@@ -2414,13 +2415,13 @@ border-bottom: none;
 <p>Correspondence concerning this article should be addressed to Jishnu Sai Matra, Fresenius University of Applied Science, Email: <a href="mailto:matra.jishnu@stud.hs-fresenius.de">matra.jishnu@stud.hs-fresenius.de</a></p>
 <br>
 </section>
-<section id="abstract" class="level1 unnumbered unlisted AuthorNote">
-<h1 class="unnumbered unlisted AuthorNote">Abstract</h1>
-<br>
-</section>
 <section id="firstheader" class="level1 title unnumbered unlisted">
 <h1 class="title unnumbered unlisted">Conducting and Presenting Multiple Linear Regression Analysis Using R</h1>
-<p>Word count: 1901</p>
+<p>Word count: 1991</p>
+</section>
+<section id="abstract" class="level1">
+<h1>Abstract</h1>
+<p>This paper compares ordinary least squares (OLS) regression with Lasso regression using the Boston Housing dataset. While both models demonstrated similar predictive performance (R² ≈ 0.74), they differ in their treatment of predictor variables. Lasso regression incorporates L1 regularization, which shrinks coefficient estimates and can perform automatic feature selection. The analysis illustrates practical implementation of both methods and discusses their respective advantages and limitations. Results suggest that while regularization had minimal impact on model fit for this dataset, Lasso regression remains valuable for feature selection and improving model interpretability.</p>
 </section>
 <section id="introduction-to-linear-regression-and-lasso-regression" class="level1">
 <h1>Introduction to Linear Regression and Lasso Regression</h1>
@@ -2507,13 +2508,13 @@ border-bottom: none;
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>lasso_r_squared <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> (<span class="fu">sum</span>((y <span class="sc">-</span> lasso_predictions)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> </span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">sum</span>((y <span class="sc">-</span> <span class="fu">mean</span>(y))<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The cross-validation procedure selected λ = 0.0121. The resulting Lasso model achieved an R² of 0.7405.</p>
+<p>The cross-validation procedure selected λ = 0.028. The resulting Lasso model achieved an R² of 0.7402.</p>
 </section>
 <section id="results" class="level1">
 <h1>Results</h1>
 <section id="model-performance" class="level2">
 <h2 data-anchor-id="model-performance">Model Performance</h2>
-<p>Both models demonstrated comparable predictive performance on the training data. The OLS regression achieved an R² of 0.7406, while the Lasso regression achieved an R² of 0.7405. The difference in R² values was minimal (10^{-4}), indicating that the regularization penalty had little impact on in-sample fit. This similarity in performance suggests that while Lasso provides coefficient shrinkage, it does not substantially sacrifice explanatory power in this dataset.</p>
+<p>Both models demonstrated comparable predictive performance on the training data. The OLS regression achieved an R² of 0.7406, while the Lasso regression achieved an R² of 0.7402. The difference in R² values was minimal (5^{-4}), indicating that the regularization penalty had little impact on in-sample fit. This similarity in performance suggests that while Lasso provides coefficient shrinkage, it does not substantially sacrifice explanatory power in this dataset.</p>
 </section>
 </section>
 <section id="discussion" class="level1">
