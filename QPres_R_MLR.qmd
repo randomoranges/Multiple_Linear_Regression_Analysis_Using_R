@@ -35,6 +35,63 @@ body {
 </style>
 ```
 
+## What is Linear Regression?
+
+**Simple Linear Regression:**
+
+- Predicts one thing based on another thing
+- Example: Predicting house price based on its size
+- Draws a straight line through your data that best fits the pattern
+- Goal: Find the line that makes the smallest prediction errors
+
+**Multiple Linear Regression:**
+
+- Predicts one thing based on multiple factors
+- Example: Predicting house price using size, number of rooms, age, and location
+- Considers all factors together to make better predictions
+- Helps you understand which factors matter most
+- In R, we use the simple `lm()` function to do this
+
+------------------------------------------------------------------------
+
+## What is Lasso Regression?
+
+**Lasso (Least Absolute Shrinkage and Selection Operator):**
+
+- A smarter version of regular regression
+- Automatically decides which factors are important and which aren't
+- Kicks out the unimportant factors completely (sets them to zero)
+- Prevents the model from being too complicated
+
+**Key Differences from Standard lm():**
+
+- **lm()**: Uses ALL factors you give it, even if some are useless
+- **Lasso**: Automatically removes useless factors, keeps only the important ones
+- **Lambda (λ)**: A dial that controls how aggressive Lasso is in removing factors
+- **Benefit**: Gives you a cleaner, simpler model that's easier to understand and explain
+- **Best for**: When you have many factors and aren't sure which ones really matter
+
+------------------------------------------------------------------------
+
+## Variable Selection: Traditional vs. Lasso
+
+**Traditional Variable Selection Methods:**
+
+- Theory-driven: Select variables based on domain knowledge
+- Correlation checks: Manually remove highly correlated predictors
+- Stepwise regression: Add/remove variables using p-values or AIC with `step()`
+- **Problems**: Manual, unstable, struggles with many correlated predictors
+
+**Lasso Approach:**
+
+- Include all variables and let Lasso decide automatically
+- L1 penalty shrinks weak coefficients to exactly zero
+- Only important variables remain in the model
+- Use cross-validation to tune optimal lambda value
+- **Advantages**: Simple, stable, perfect for high-dimensional data
+
+------------------------------------------------------------------------
+
 ## About the Analysis
 
 ::::: columns
@@ -82,8 +139,16 @@ body {
 if (!require(glmnet)) {
   install.packages("glmnet")
 }
+if (!require(ggplot2)) {
+  install.packages("ggplot2")
+}
+if (!require(reshape2)) {
+  install.packages("reshape2")
+}
 library(glmnet)
 library(MASS)
+library(ggplot2)
+library(reshape2)
 ```
 
 **Purpose:** Set up the required libraries for our analysis
@@ -100,11 +165,17 @@ library(MASS)
 data(Boston)
 head(Boston, 3)
 
+# OR load your own CSV file from computer:
+# my_data <- read.csv("path/to/your/file.csv")
+# Example: my_data <- read.csv("C:/Users/YourName/Documents/data.csv")
+
 X <- as.matrix(Boston[, -14])
 y <- Boston$medv
 ```
 
 **What we did:** Loaded the Boston dataset and separated predictors (X) from the target variable (y)
+
+**To use your own data:** Replace the data loading with `read.csv()` and adjust column selection
 
 ------------------------------------------------------------------------
 
@@ -177,22 +248,52 @@ cat("\nDifference:", lm_r_squared - lasso_r_squared, "\n")
 
 ------------------------------------------------------------------------
 
+## Plot: Predicted vs Actual
+
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 6
+
+# Predicted vs Actual values
+plot(y, lasso_predictions, 
+     main = "Lasso: Predicted vs Actual Values",
+     xlab = "Actual Median Value ($1000s)", 
+     ylab = "Predicted Median Value ($1000s)",
+     pch = 19, col = rgb(0, 0, 1, 0.5))
+abline(0, 1, col = "red", lwd = 2)
+legend("topleft", legend = "Perfect Prediction Line", 
+       col = "red", lwd = 2)
+```
+
+**What this shows:** Points close to the red line indicate accurate predictions
+
+------------------------------------------------------------------------
+
 ## Business Applications
 
+**Real-World Uses:**
+
 1. **Sales Forecasting**  
-   Use regression to predict future sales using variables like marketing spend, pricing, or seasonality.
+   Predict future sales based on marketing spend, pricing, and seasonality to plan inventory and budgets.
 
 2. **Customer Churn Prediction**  
-   Identify which customer behaviors or attributes most strongly indicate churn risk.
+   Identify which customer behaviors indicate they're likely to leave, so you can take action early.
 
 3. **Marketing Channel Optimization**  
-   Use Lasso to find which marketing channels contribute most to revenue and remove low-impact ones.
+   Use Lasso to find which advertising channels (social media, TV, email) actually drive revenue and cut the rest.
 
-4. **Employee Attrition & Performance Modeling**  
-   Predict employee outcomes based on workload, satisfaction, and manager ratings.
+4. **Employee Attrition Modeling**  
+   Predict which employees might quit based on workload, satisfaction scores, and performance reviews.
 
-5. **Demand Forecasting for Inventory**  
-   Estimate product demand using promotions, weather, or store traffic to improve stock planning.
+5. **Demand Forecasting**  
+   Estimate product demand using weather, promotions, and foot traffic to optimize stock levels.
+
+6. **Loan Default Prediction**  
+   Banks use regression to predict who might default on loans based on income, credit history, and debt levels.
+
+7. **Real Estate Pricing**  
+   Automatically estimate property values using location, size, age, and neighborhood features.
 
 ------------------------------------------------------------------------
 
@@ -211,17 +312,6 @@ Run the same workflow (load → prepare → fit → compare) using a *different 
 
 **Goal:**  
 See how model behavior changes with a new dataset.
-
-
-------------------------------------------------------------------------
-
-## Conclusion
-
--   **Linear Regression**: Uses all predictors, no regularization
--   **Lasso Regression**: Applies L1 penalty, can eliminate irrelevant features
--   **Performance**: Both models show similar R² values on this dataset
--   **Advantage of Lasso**: Provides feature selection and helps prevent overfitting
--   **Use Case**: Lasso is particularly useful when you have many predictors and want a simpler, more interpretable model
 
 ------------------------------------------------------------------------
 
