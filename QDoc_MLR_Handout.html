@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jishnu Sai Matra">
-<meta name="description" content="MULTIPLE LINEAR REGRESSION ANALYSIS USING R">
+<meta name="description" content="CONDUCTING AND PRESENTING MULTIPLE LINEAR REGRESSION ANALYSIS USING R">
 
-<title>Multiple Linear Regression Analysis Using R</title>
+<title>Conducting and Presenting Multiple Linear Regression Analysis Using R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -2361,11 +2361,12 @@ border-bottom: none;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
+  <li><a href="#introduction-to-linear-regression-and-lasso-regression" id="toc-introduction-to-linear-regression-and-lasso-regression" class="nav-link active" data-scroll-target="#introduction-to-linear-regression-and-lasso-regression">Introduction to Linear Regression and Lasso Regression</a>
   <ul class="collapse">
-  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#key-terms-explained" id="toc-key-terms-explained" class="nav-link" data-scroll-target="#key-terms-explained">Key Terms Explained</a></li>
+  <li><a href="#suitable-data-for-multiple-linear-regression-and-lasso-regression" id="toc-suitable-data-for-multiple-linear-regression-and-lasso-regression" class="nav-link" data-scroll-target="#suitable-data-for-multiple-linear-regression-and-lasso-regression">Suitable Data for Multiple Linear Regression and Lasso Regression</a></li>
   <li><a href="#statistical-approach" id="toc-statistical-approach" class="nav-link" data-scroll-target="#statistical-approach">Statistical Approach</a></li>
+  <li><a href="#variable-selection-traditional-ways-vs.-lasso" id="toc-variable-selection-traditional-ways-vs.-lasso" class="nav-link" data-scroll-target="#variable-selection-traditional-ways-vs.-lasso">Variable Selection: Traditional Ways vs. Lasso</a></li>
   <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation">Implementation</a></li>
   </ul></li>
   <li><a href="#linear-regression-model" id="toc-linear-regression-model" class="nav-link" data-scroll-target="#linear-regression-model">Linear Regression Model</a></li>
@@ -2396,7 +2397,7 @@ border-bottom: none;
 <br>
 
 <section id="title" class="level1 title unnumbered unlisted">
-<h1 class="title unnumbered unlisted">Multiple Linear Regression Analysis Using R</h1>
+<h1 class="title unnumbered unlisted">Conducting and Presenting Multiple Linear Regression Analysis Using R</h1>
 <div class="Author">
 <br>
 
@@ -2418,18 +2419,39 @@ border-bottom: none;
 <br>
 </section>
 <section id="firstheader" class="level1 title unnumbered unlisted">
-<h1 class="title unnumbered unlisted">Multiple Linear Regression Analysis Using R</h1>
+<h1 class="title unnumbered unlisted">Conducting and Presenting Multiple Linear Regression Analysis Using R</h1>
+<p>Word count: 1902</p>
 </section>
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>Regression analysis is fundamental in statistical modeling, allowing researchers to understand relationships between variables and make predictions. While ordinary least squares (OLS) regression remains widely used, it can suffer from overfitting when dealing with multiple predictors, particularly in datasets where predictors are correlated. Lasso (Least Absolute Shrinkage and Selection Operator) regression offers an alternative approach by incorporating regularization, which constrains coefficient estimates and can perform automatic feature selection.</p>
-<p>This handout demonstrates the practical implementation and comparison of linear regression and Lasso regression using the Boston Housing dataset. The analysis aims to illustrate how regularization affects model coefficients and predictive performance, providing insights into when Lasso regression may be preferable to traditional linear regression.</p>
+<section id="introduction-to-linear-regression-and-lasso-regression" class="level1">
+<h1>Introduction to Linear Regression and Lasso Regression</h1>
+<p>Linear regression is one of the most fundamental tools in statistics and data analysis. According to <span class="citation" data-cites="Hubchev">(<a href="#ref-Hubchev" role="doc-biblioref">Hubchev, n.d.</a>)</span>, in its simplest form — simple linear regression — we model the relationship between a single continuous outcome variable (Y) and one predictor (X) using the equation:</p>
+<p>Y = α + βX + ε</p>
+<p>where β represents the change in Y for a one-unit increase in X, α is the intercept, and ε is the random error term. The goal is to find the best-fitting line by minimizing the sum of squared residuals (ordinary least squares, OLS). In practice, linear regression is widely used in economics, social sciences, medicine, marketing, and almost any field where we want to understand or predict how one variable responds to changes in others — think predicting house prices from square footage, exam scores from study hours, or sales from advertising spend.</p>
+<p>When we have more than one predictor, the model naturally extends to multiple linear regression:</p>
+<p>Y = α + β₁X₁ + β₂X₂ + … + βₖXₖ + ε</p>
+<p>This allows us to control for several factors at once and isolate the effect of each predictor while holding the others constant (ceteris paribus). In RStudio, the most common way to fit these models is using the built-in lm() function from the base stats package. A typical command looks like lm(y ~ x1 + x2 + x3, data = mydata), which is incredibly straightforward and returns coefficients, p-values, R-squared, and other diagnostics almost instantly.</p>
+<p>One can explore more about multiple linear regression from my colleague’s <a href="https://mariarojas01.github.io/data-analysis/" title="Conducting and Presenting Multiple Linear Regression Analysis Using R">report</a> where she explains, step by step, how to conduct multiple linear regression using RStudio’s built-in lm() model on the classic mtcars dataset. Her work is a great hands-on introduction if you’re just getting started with lm().</p>
+<p>However, when the number of predictors becomes large or when predictors are highly correlated (multicollinearity), ordinary least squares can produce unstable estimates and overfitted models. This is where regularized methods like Lasso regression come in.</p>
+<p>Lasso (Least Absolute Shrinkage and Selection Operator), introduced by Tibshirani (1996), is a modification of linear regression that adds a penalty term to the loss function. Instead of just minimizing the sum of squared errors, Lasso minimizes:</p>
+<p>Sum of squared errors + λ × Σ|βⱼ|</p>
+<p>This L1 penalty forces some coefficients to shrink all the way to exactly zero, automatically performing variable selection and giving us a simpler, more interpretable model. The tuning parameter λ (lambda) controls the strength of the penalty: λ = 0 gives the usual OLS solution, while a very large λ can shrink all coefficients to zero.</p>
+<p>In this report, we will walk through how to perform multiple linear regression using both the standard lm() function and the glmnet package for Lasso regression <span class="citation" data-cites="Tibshirani1996">(<a href="#ref-Tibshirani1996" role="doc-biblioref">Tibshirani, 1996</a>)</span>. We will fit both models on the same dataset, compare coefficients, R-squared values, selected variables, and cross-validated prediction error, so you can clearly see the differences in practice.</p>
+<section id="key-terms-explained" class="level2">
+<h2 data-anchor-id="key-terms-explained">Key Terms Explained</h2>
+<p>To understand the mechanics of these models, it is helpful to define the key terms used in our analysis:</p>
+<ul>
+<li><p><strong>Coefficients</strong>: These numbers tell us the expected change in the outcome for a one-unit change in the predictor, holding everything else constant. In Lasso, some may be exactly zero, meaning that predictor is completely dropped from the model.</p></li>
+<li><p><strong>R-squared (R²)</strong>: Shows what proportion of the variation in Y is explained by the model. In regular lm() output it’s directly reported, but with Lasso we often look at adjusted R² or cross-validated R² because the penalty slightly reduces apparent fit on training data.</p></li>
+<li><p><strong>Penalty (L1)</strong>: The core innovation of Lasso — the sum of the absolute values of the coefficients. Because of the sharp “corner” of the absolute value function, it tends to produce sparse solutions (many zeros).</p></li>
+<li><p><strong>Regularization</strong>: The general idea of adding a penalty to prevent the model from fitting noise (overfitting). Lasso uses L1 regularization; Ridge uses L2 (sum of squares); Elastic Net combines both.</p></li>
+<li><p><strong>Lambda (λ)</strong>: The knob we turn to control how much regularization we want. We usually try many λ values using cross-validation and pick the one that gives the best predictive performance (often denoted λ₁se or λmin in software).</p></li>
+</ul>
 </section>
-<section id="methods" class="level1">
-<h1>Methods</h1>
-<section id="dataset" class="level2">
-<h2 data-anchor-id="dataset">Dataset</h2>
-<p>The Boston Housing dataset, available in the MASS package in R, contains information on housing values in suburbs of Boston. The dataset includes 506 observations across 14 variables. The outcome variable is <code>medv</code> (median value of owner-occupied homes in $1000s), while the 13 predictor variables include per capita crime rate, proportion of residential land zoned for lots, average number of rooms per dwelling, and other neighborhood characteristics.</p>
+<section id="suitable-data-for-multiple-linear-regression-and-lasso-regression" class="level2">
+<h2 data-anchor-id="suitable-data-for-multiple-linear-regression-and-lasso-regression">Suitable Data for Multiple Linear Regression and Lasso Regression</h2>
+<p>Multiple linear regression (both standard <code>lm()</code> and Lasso) works well when the outcome is continuous or nearly continuous (e.g., house prices, fuel efficiency, exam scores, wages) and predictors are numeric or categorical (converted to dummy variables). Popular datasets include <code>mtcars</code>, Boston Housing, <code>diamonds</code>, and <code>penguins</code>. However, it cannot handle binary outcomes (use logistic regression), ordered categories (use ordinal regression), count data (use Poisson/negative binomial), survival times (use Cox models), or clustered data (use mixed-effects models). In short: if your dependent variable is a meaningful numeric quantity you can average and appears reasonably linear (possibly after transformation), you’re good to go.</p>
+<p>For this project, we use the Boston Housing dataset (Harrison &amp; Rubinfeld, 1978; available via <code>MASS::Boston</code>). It contains housing values in 506 Boston suburbs from the 1970s, with 14 variables. The outcome <code>medv</code> is median home value (in $1000s)—a classic continuous target. The 13 predictors include per capita crime rate (<code>crim</code>), proportion of residential land zoned for large lots (<code>zn</code>), average rooms per dwelling (<code>rm</code>), proportion of non-retail business acres (<code>indus</code>), nitric oxide concentration (<code>nox</code>), pupil–teacher ratio (<code>ptratio</code>), and other neighborhood socio-economic and environmental characteristics.</p>
+<p>This dataset is well-suited for demonstrating Lasso regression because several predictors are moderately to highly correlated (e.g., <code>rad</code> and <code>tax</code>, <code>nox</code> and <code>indus</code>, <code>dis</code> and <code>age</code>), which makes ordinary least-squares coefficients unstable—exactly where Lasso shines through automatic variable selection and shrinkage. Note: This dataset has been deprecated in some R packages due to ethical concerns (one variable, <code>b</code>, relates to proportion of Black residents, raising bias issues). Despite this, it remains widely used educationally when the focus is purely methodological and the sensitive variable is handled carefully. For comparing <code>lm()</code> versus Lasso, it remains an ideal pedagogical choice.</p>
 </section>
 <section id="statistical-approach" class="level2">
 <h2 data-anchor-id="statistical-approach">Statistical Approach</h2>
@@ -2437,6 +2459,10 @@ border-bottom: none;
 <p>The Lasso regression objective function minimizes:</p>
 <p><span class="math display">\text{RSS} + \lambda \sum_{j=1}^{p} |\beta_j|</span></p>
 <p>where RSS is the residual sum of squares, λ is the regularization parameter, and <span class="math inline">\beta_j</span> represents the regression coefficients. This penalty encourages sparsity by shrinking some coefficients to exactly zero. Model performance was evaluated using R², which measures the proportion of variance in the outcome variable explained by the predictors.</p>
+</section>
+<section id="variable-selection-traditional-ways-vs.-lasso" class="level2">
+<h2 data-anchor-id="variable-selection-traditional-ways-vs.-lasso">Variable Selection: Traditional Ways vs. Lasso</h2>
+<p>With many potential variables, you first try <strong>theory</strong> (pick based on research), <strong>correlation checks</strong>(drop highly correlated ones), or <strong>stepwise regression</strong> (add/remove variables one-by-one using p-values or AIC in R’s <strong><code>step()</code></strong>). But these are manual, unstable, and struggle with tons of correlated predictors. <strong>Lasso fixes this</strong> by throwing <em>all</em> variables into the model and using an L1 penalty that automatically shrinks weak coefficients to exactly zero—leaving only the important ones. Tune lambda with cross-validation in <strong><code>glmnet()</code></strong>, and you’re done. Simple, stable, and perfect for high-dimensional data.</p>
 </section>
 <section id="implementation" class="level2">
 <h2 data-anchor-id="implementation">Implementation</h2>
@@ -2481,13 +2507,13 @@ border-bottom: none;
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>lasso_r_squared <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> (<span class="fu">sum</span>((y <span class="sc">-</span> lasso_predictions)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> </span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">sum</span>((y <span class="sc">-</span> <span class="fu">mean</span>(y))<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The cross-validation procedure selected λ = 0.0193. The resulting Lasso model achieved an R² of 0.7404.</p>
+<p>The cross-validation procedure selected λ = 0.0176. The resulting Lasso model achieved an R² of 0.7404.</p>
 </section>
 <section id="results" class="level1">
 <h1>Results</h1>
 <section id="model-performance" class="level2">
 <h2 data-anchor-id="model-performance">Model Performance</h2>
-<p>Both models demonstrated comparable predictive performance on the training data. The OLS regression achieved an R² of 0.7406, while the Lasso regression achieved an R² of 0.7404. The difference in R² values was minimal (3^{-4}), indicating that the regularization penalty had little impact on in-sample fit. This similarity in performance suggests that while Lasso provides coefficient shrinkage, it does not substantially sacrifice explanatory power in this dataset.</p>
+<p>Both models demonstrated comparable predictive performance on the training data. The OLS regression achieved an R² of 0.7406, while the Lasso regression achieved an R² of 0.7404. The difference in R² values was minimal (2^{-4}), indicating that the regularization penalty had little impact on in-sample fit. This similarity in performance suggests that while Lasso provides coefficient shrinkage, it does not substantially sacrifice explanatory power in this dataset.</p>
 </section>
 </section>
 <section id="discussion" class="level1">
@@ -2499,6 +2525,7 @@ border-bottom: none;
 <section id="conclusion" class="level1">
 <h1>Conclusion</h1>
 <p>This handout illustrated the implementation and comparison of linear and Lasso regression using the Boston Housing dataset. Both models achieved similar predictive performance, with R² values above 0.73. The Lasso model successfully applied regularization to shrink coefficient estimates while maintaining explanatory power. These results highlight that Lasso regression can be a valuable tool in the statistical modeling toolkit, particularly when feature selection or improved generalization is desired. Future analyses could extend this comparison by evaluating model performance on independent test data and exploring alternative regularization approaches.</p>
+<p>Github Repo: <a href="https://github.com/randomoranges/Multiple_Linear_Regression_Analysis_Using_R" class="uri">https://github.com/randomoranges/Multiple_Linear_Regression_Analysis_Using_R</a></p>
 </section>
 <section id="affidavit" class="level1">
 <h1>Affidavit</h1>
@@ -2528,6 +2555,12 @@ border-bottom: none;
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-Harris2023" class="csl-entry" role="listitem">
 Harris, M. (2023). <em>Regression with cross-validation in r</em>. <a href="https://www.statswithr.com/tutorials/regression-with-cross-validation-in-r">https://www.statswithr.com/tutorials/regression-with-cross-validation-in-r</a>
+</div>
+<div id="ref-Hubchev" class="csl-entry" role="listitem">
+Hubchev, V. (n.d., n.d.). <em>8 regression analysis – quantitative methods</em>. <a href="https://hubchev.github.io/qm/regression.html">https://hubchev.github.io/qm/regression.html</a>
+</div>
+<div id="ref-Tibshirani1996" class="csl-entry" role="listitem">
+Tibshirani, R. (1996). Regression shrinkage and selection via the lasso. <em>Journal of the Royal Statistical Society: Series B (Methodological)</em>, <em>58</em>(1), 267–288. <a href="https://doi.org/10.1111/j.2517-6161.1996.tb02080.x">https://doi.org/10.1111/j.2517-6161.1996.tb02080.x</a>
 </div>
 </div>
 </section>

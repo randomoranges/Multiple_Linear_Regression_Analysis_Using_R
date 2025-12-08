@@ -390,7 +390,7 @@ R-squared: 0.7406427 </code></pre>
 <span id="cb11-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Best lambda from cross-validation:"</span>, best_lambda, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Best lambda from cross-validation: 0.02551743 </code></pre>
+<pre><code>Best lambda from cross-validation: 0.019303 </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a>lasso_model <span class="ot">&lt;-</span> <span class="fu">glmnet</span>(X, y, <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">lambda =</span> best_lambda)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -412,21 +412,21 @@ R-squared: 0.7406427 </code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(lasso_coef)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>14 x 1 sparse Matrix of class "dgCMatrix"
-                       s0
-(Intercept)  34.645368692
-crim         -0.099796844
-zn            0.041929546
-indus         .          
-chas          2.684827640
-nox         -16.413644796
-rm            3.859008198
-age           .          
-dis          -1.405470183
-rad           0.259340397
-tax          -0.010100049
-ptratio      -0.932163572
-black         0.009057747
-lstat        -0.522293555</code></pre>
+                      s0
+(Intercept)  35.03100517
+crim         -0.10150560
+zn            0.04292387
+indus         .         
+chas          2.69470749
+nox         -16.63650807
+rm            3.84536681
+age           .         
+dis          -1.42738037
+rad           0.26746443
+tax          -0.01044899
+ptratio      -0.93473520
+black         0.00910638
+lstat        -0.52260621</code></pre>
 </div>
 </div>
 </section>
@@ -444,12 +444,12 @@ lstat        -0.522293555</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Lasso glmnet R-squared:"</span>, lasso_r_squared, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Lasso glmnet R-squared: 0.7402505 </code></pre>
+<pre><code>Lasso glmnet R-squared: 0.7403799 </code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Difference:"</span>, lm_r_squared <span class="sc">-</span> lasso_r_squared, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Difference: 0.0003921829 </code></pre>
+Difference: 0.0002627871 </code></pre>
 </div>
 </div>
 <p><strong>Observation:</strong> Lasso achieves similar performance while potentially simplifying the model by shrinking some coefficients</p>
