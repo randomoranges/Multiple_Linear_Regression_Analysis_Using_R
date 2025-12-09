@@ -8,9 +8,6 @@ author:
     address: "Lutzenkirchen"
     city: "Leverkusen"
     corresponding: true
-
-abstract: |
-  This paper compares ordinary least squares (OLS) regression with Lasso regression using the Boston Housing dataset. While both models demonstrated similar predictive performance (R² ≈ 0.74), they differ in their treatment of predictor variables. Lasso regression incorporates L1 regularization, which shrinks coefficient estimates and can perform automatic feature selection. The analysis illustrates practical implementation of both methods and discusses their respective advantages and limitations. Results suggest that while regularization had minimal impact on model fit for this dataset, Lasso regression remains valuable for feature selection and improving model interpretability.
   
 
 floatsintext: true
@@ -42,6 +39,10 @@ reference-location: document
 ---
 
 Word count: {{wordcount}}
+
+# Abstract
+
+This paper compares ordinary least squares (OLS) regression with Lasso regression using the Boston Housing dataset. While both models demonstrated similar predictive performance (R² ≈ 0.74), they differ in their treatment of predictor variables. Lasso regression incorporates L1 regularization, which shrinks coefficient estimates and can perform automatic feature selection. The analysis illustrates practical implementation of both methods and discusses their respective advantages and limitations. Results suggest that while regularization had minimal impact on model fit for this dataset, Lasso regression remains valuable for feature selection and improving model interpretability.
 
 # Introduction to Linear Regression and Lasso Regression
 

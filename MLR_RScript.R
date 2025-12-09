@@ -12,23 +12,15 @@ if (!require(reshape2)) {
 }
 
 # Load libraries
-library(glmnet)    # For Lasso regression
-library(MASS)      # Contains Boston dataset
-library(ggplot2)   # For advanced visualizations
-library(reshape2)  # For data manipulation
+library(glmnet)    
+library(MASS)      
+library(ggplot2)
+library(reshape2)  
 
 # STEP 2: Load and Prepare Data
 
-# Option 1: Load built-in Boston dataset
-#data(Boston)
-#head(Boston, 3)
-
-#Option 2: Load your own CSV file from computer
-my_data <- read.csv("/Users/jishnu/Desktop/Multiple_Linear_Regression_Using_R/Multiple_Linear_Analysis_Using_R/BostonHousing.csv")
-# On Mac/Linux: "/Users/YourName/Documents/data.csv"
-
 data(Boston)
-head(Boston, 5)
+head(Boston, 3)
 
 # Prepare the data: Separate predictors (X) and target variable (y)
 X <- as.matrix(Boston[, -14])  # All columns except the 14th (medv)
@@ -43,7 +35,7 @@ lm_model <- lm(medv ~ ., data = Boston)
 lm_coef <- coef(lm_model)
 lm_r_squared <- summary(lm_model)$r.squared
 
-# Display results
+# Results
 cat("--- Base lm() Coefficients ---\n")
 print(lm_coef)
 cat("\nR-squared:", lm_r_squared, "\n")

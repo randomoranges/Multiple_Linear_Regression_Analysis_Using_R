@@ -73,22 +73,19 @@ body {
 
 ------------------------------------------------------------------------
 
-## Variable Selection: Traditional vs. Lasso
+## When to Use Linear Regression
 
-**Traditional Variable Selection Methods:**
+**Best For:** Continuous outcome variables (numbers on a scale)
 
-- Theory-driven: Select variables based on domain knowledge
-- Correlation checks: Manually remove highly correlated predictors
-- Stepwise regression: Add/remove variables using p-values or AIC with `step()`
-- **Problems**: Manual, unstable, struggles with many correlated predictors
+- Sales revenue from advertising spend
+- House prices based on size and location
+- Temperature predictions from weather variables
+- Student test scores from study hours
 
-**Lasso Approach:**
+**Key Question It Answers:** How does one variable respond to changes in others?
 
-- Include all variables and let Lasso decide automatically
-- L1 penalty shrinks weak coefficients to exactly zero
-- Only important variables remain in the model
-- Use cross-validation to tune optimal lambda value
-- **Advantages**: Simple, stable, perfect for high-dimensional data
+**Bottom Line:**
+Know your data! Linear regression needs a continuous outcome variable to work properly.
 
 ------------------------------------------------------------------------
 
@@ -119,13 +116,13 @@ body {
 
 **Coefficients**: Numerical values that represent the relationship strength between each predictor variable and the target variable. A larger absolute value indicates stronger influence.
 
-**R-squared (R²)**: A statistical measure (ranging from 0 to 1) that indicates the proportion of variance in the dependent variable that is predictable from the independent variables. Higher values indicate better model fit.
+**R-squared (R²)**: R squared is the model's accuracy score, it ranges from 0 to 1.
 
-**Penalty (L1)**: In Lasso regression, the penalty is the sum of absolute values of coefficients. This can force some coefficients to become exactly zero, effectively performing feature selection.
+**Penalty (L1)**: In Lasso, add up all the coefficient values (ignoring positive/negative signs) and "if this total gets too big, we'll add a penalty to the model." This can force some coefficients to become exactly zero, effectively performing feature selection.
 
-**Regularization**: A technique to prevent overfitting by adding a penalty term to the loss function, discouraging overly complex models with large coefficients.
+**Regularization**: A technique to prevent overfitting. Without it, models can become too complicated, memorizing training data instead of learning real patterns.
 
-**Lambda (λ)**: The regularization strength parameter. Higher λ values create stronger penalties, leading to more coefficients being shrunk toward zero.
+**Lambda (λ)**: Lamda is a hyper parameter, which can use to control how strict and simple a model can be. If the lamda value is more, then it gives more strict penalties and keeps the model simple, and vice-versa. 
 
 ------------------------------------------------------------------------
 
